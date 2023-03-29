@@ -1,6 +1,16 @@
-dependencies: 
-  GQL_FRAGMENT_VARIABLES
-query:
+EVERYTHING_IN_ONE_BIG_FILE_COZ_JOHAN_WANTS_IT: true
+
+GQL_FRAGMENT_VARIABLES: '''
+    fragment variable_full_fields on Variable {
+    metadata
+    solvable
+    solverData
+    {
+    	...solverdata_fields
+    }
+    }
+ '''
+GQL_GET_VARIABLE: '''
   query get_variable(
     $userId: ID!
     $robotId: ID!
@@ -21,3 +31,4 @@ query:
       }
     }
   }
+  '''
