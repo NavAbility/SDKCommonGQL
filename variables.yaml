@@ -1,0 +1,251 @@
+GQL_FRAGMENT_SOLVERDATA: |
+  fragment solverdata_fields on SolverData {
+    # Note this must be the same order as PackedVariableNodeData otherwise JSON3 will fail.
+    id
+    vecval
+    dimval
+    vecbw
+    dimbw
+    BayesNetOutVertIDs
+    dimIDs
+    dims
+    eliminated
+    BayesNetVertID
+    separator
+    variableType
+    initialized
+    infoPerCoord
+    ismargin
+    dontmargin
+    solveInProgress
+    solvedCount
+    solveKey
+    _version  
+  }
+  
+GQL_FRAGMENT_VARIABLES_SUMMARY: |
+  fragment ppe_fields on PPE {
+      # Note this must be the same order as MeanMaxPPE otherwise JSON3 will fail.
+      id
+      solveKey
+      suggested
+      max
+      mean
+      _type
+      _version
+      createdTimestamp
+      lastUpdatedTimestamp
+    }
+  
+  fragment blobEntry_fields on BlobEntry {
+    id
+    blobId
+    originId
+    label
+    blobstore
+    hash
+    origin
+    description
+    mimeType
+    metadata
+    timestamp
+    _type
+    _version
+  }
+  
+  fragment variable_summary_fields on Variable {
+    timestamp
+    nstime
+    ppes {
+      ...ppe_fields
+    }
+    blobEntries {
+      ...blobEntry_fields
+    }
+    variableType
+    _version
+  }
+  
+GQL_FRAGMENT_SESSION: |
+  fragment session_fields on Session {
+    id
+    label
+    _version
+    createdTimestamp
+    lastUpdatedTimestamp
+  }
+  
+GQL_FRAGMENT_FACTORS_SKELETON: |
+  fragment factor_skeleton_fields on Factor {
+    id
+    label
+    tags
+    _variableOrderSymbols
+  }
+  
+GQL_FRAGMENT_USER: |
+  fragment user_fields on User {
+    id
+    label
+    _version
+    createdTimestamp
+    lastUpdatedTimestamp
+  }
+  
+GQL_FRAGMENT_FACTORS: |
+  fragment factor_skeleton_fields on Factor {
+    id
+    label
+    tags
+    _variableOrderSymbols
+  }
+  
+  fragment factor_summary_fields on Factor {
+    timestamp
+    nstime
+  }
+  
+  fragment factor_full_fields on Factor {
+    fnctype
+    solvable
+    data
+    metadata
+    _type
+    _version
+  }
+  
+GQL_FRAGMENT_ROBOT: |
+  fragment robot_fields on Robot {
+    id
+    label
+    _version
+    createdTimestamp
+    lastUpdatedTimestamp
+  }
+  
+GQL_FRAGMENT_BLOBENTRY: |
+  fragment blobEntry_fields on BlobEntry {
+    id
+    blobId
+    originId
+    label
+    blobstore
+    hash
+    origin
+    description
+    mimeType
+    metadata
+    timestamp
+    _type
+    _version
+  }
+  
+GQL_FRAGMENT_PPES: |
+  fragment ppe_fields on PPE {
+      # Note this must be the same order as MeanMaxPPE otherwise JSON3 will fail.
+      id
+      solveKey
+      suggested
+      max
+      mean
+      _type
+      _version
+      createdTimestamp
+      lastUpdatedTimestamp
+    }
+  
+GQL_FRAGMENT_FACTORS_SUMMARY: |
+  fragment factor_summary_fields on Factor {
+    timestamp
+    nstime
+  }
+  
+GQL_FRAGMENT_VARIABLES: |
+  fragment solverdata_fields on SolverData {
+    # Note this must be the same order as PackedVariableNodeData otherwise JSON3 will fail.
+    id
+    vecval
+    dimval
+    vecbw
+    dimbw
+    BayesNetOutVertIDs
+    dimIDs
+    dims
+    eliminated
+    BayesNetVertID
+    separator
+    variableType
+    initialized
+    infoPerCoord
+    ismargin
+    dontmargin
+    solveInProgress
+    solvedCount
+    solveKey
+    _version  
+  }
+  
+  fragment variable_skeleton_fields on Variable {
+      id
+      label
+      tags
+    }
+  
+  fragment ppe_fields on PPE {
+      # Note this must be the same order as MeanMaxPPE otherwise JSON3 will fail.
+      id
+      solveKey
+      suggested
+      max
+      mean
+      _type
+      _version
+      createdTimestamp
+      lastUpdatedTimestamp
+    }
+  
+  fragment blobEntry_fields on BlobEntry {
+    id
+    blobId
+    originId
+    label
+    blobstore
+    hash
+    origin
+    description
+    mimeType
+    metadata
+    timestamp
+    _type
+    _version
+  }
+  
+  fragment variable_summary_fields on Variable {
+    timestamp
+    nstime
+    ppes {
+      ...ppe_fields
+    }
+    blobEntries {
+      ...blobEntry_fields
+    }
+    variableType
+    _version
+  }
+  
+  fragment variable_full_fields on Variable {
+    metadata
+    solvable
+    solverData
+    {
+      ...solverdata_fields
+    }
+  }
+  
+GQL_FRAGMENT_VARIABLES_SKELETON: |
+  fragment variable_skeleton_fields on Variable {
+      id
+      label
+      tags
+    }
+  
