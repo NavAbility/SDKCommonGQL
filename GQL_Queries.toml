@@ -1,0 +1,112 @@
+# =================================================
+# Variable Fragments
+# =================================================
+
+[[fragment]]
+name = "GQL_FRAGMENT_VARIABLES"
+
+[[fragment.data]]
+data = """
+fragment ppe_fields on Ppe {
+  solveKey
+  suggested
+  max
+  mean
+  lastUpdatedTimestamp
+}"""
+
+[[fragment.data]]
+data = """
+fragment solverdata_fields on SolverData {
+  solveKey
+  BayesNetOutVertIDs
+  BayesNetVertID
+  dimIDs
+  dimbw
+  dims
+  dimval
+  dontmargin
+  eliminated
+  infoPerCoord
+  initialized
+  ismargin
+  separator
+  solveInProgress
+  solvedCount
+  variableType
+  vecbw
+  vecval
+  _version
+}"""
+
+# =================================================
+# Factor Fragments
+# =================================================
+
+[[fragment]]
+name = "GQL_FRAGMENT_FACTORS"
+
+[[fragment.data]]
+data = """
+fragment factor_skeleton_fields on Factor {
+  label
+  tags
+  _variableOrderSymbols
+}"""
+
+[[fragment.data]]
+data = """
+fragment factor_summary_fields on Factor {
+  timestamp
+  _version
+}"""
+
+# =================================================
+# Variable Queries
+# =================================================
+
+[[queries]]
+name = "GQL_GET_VARIABLE"
+data = """
+query sdk_get_variable(
+  $userId: ID!,
+  $robotId: ID!,
+  $sessionId: ID!,
+  $label: ID!) {
+    users(where:{id: $userId}) {
+      robots(where:{id: $robotId}) {
+        sessions(where:{id: $sessionId}) {
+          variables(where:{label: $label}) {
+            ...variable_skeleton_fields
+            ...variable_summary_fields
+            ...variable_full_fields
+          }
+        }
+      }
+    }
+  }"""
+
+# =================================================
+# Factor Queries
+# =================================================
+
+[[queries]]
+name = "GQL_GET_FACTOR"
+data = """
+query sdk_get_variable(
+  $userId: ID!,
+  $robotId: ID!,
+  $sessionId: ID!,
+  $label: ID!) {
+    users(where:{id: $userId}) {
+      robots(where:{id: $robotId}) {
+        sessions(where:{id: $sessionId}) {
+          factors(where:{label: $label}) {
+            ...factor_skeleton_fields
+            ...factor_summary_fields
+            ...factor_full_fields
+          }
+        }
+      }
+    }
+  }"""
