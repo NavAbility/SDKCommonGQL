@@ -62,10 +62,10 @@ fragment factor_summary_fields on Factor {
 }"""
 
 # =================================================
-# Variable Queries
+# Variable Operations
 # =================================================
 
-[[queries]]
+[[operation]]
 name = "GQL_GET_VARIABLE"
 data = """
 query sdk_get_variable(
@@ -87,10 +87,10 @@ query sdk_get_variable(
   }"""
 
 # =================================================
-# Factor Queries
+# Factor Operations
 # =================================================
 
-[[queries]]
+[[operation]]
 name = "GQL_GET_FACTOR"
 data = """
 query sdk_get_variable(
