@@ -2,12 +2,10 @@
 # Variable Fragments
 # =================================================
 
-[[fragment]]
-name = "GQL_FRAGMENT_VARIABLES"
+[fragments]
 
-[[fragment.data]]
-data = """
-fragment ppe_fields on Ppe {
+FRAGMENT_PPE_FIELDS = """
+fragment FRAGMENT_PPE_FIELDS on Ppe {
   solveKey
   suggested
   max
@@ -15,9 +13,8 @@ fragment ppe_fields on Ppe {
   lastUpdatedTimestamp
 }"""
 
-[[fragment.data]]
-data = """
-fragment solverdata_fields on SolverData {
+FRAGMENT_SOLVERDATA_FIELDS = """
+fragment FRAGMENT_SOLVERDATA_FIELDS on SolverData {
   solveKey
   BayesNetOutVertIDs
   BayesNetVertID
@@ -43,20 +40,15 @@ fragment solverdata_fields on SolverData {
 # Factor Fragments
 # =================================================
 
-[[fragment]]
-name = "GQL_FRAGMENT_FACTORS"
-
-[[fragment.data]]
-data = """
-fragment factor_skeleton_fields on Factor {
+FRAGMENT_FACTOR_SKELETON_FIELDS = """
+fragment FRAGMENT_FACTOR_SKELETON_FIELDS on Factor {
   label
   tags
   _variableOrderSymbols
 }"""
 
-[[fragment.data]]
-data = """
-fragment factor_summary_fields on Factor {
+FRAGMENT_FACTOR_SUMMARY_FIELDS = """
+fragment FRAGMENT_FACTOR_SUMMARY_FIELDS on Factor {
   timestamp
   _version
 }"""
@@ -65,10 +57,10 @@ fragment factor_summary_fields on Factor {
 # Variable Operations
 # =================================================
 
-[[operation]]
-name = "GQL_GET_VARIABLE"
-data = """
-query sdk_get_variable(
+[operations]
+
+QUERY_GET_VARIABLE = """
+query QUERY_GET_VARIABLE(
   $userId: ID!,
   $robotId: ID!,
   $sessionId: ID!,
@@ -86,14 +78,25 @@ query sdk_get_variable(
     }
   }"""
 
+QUERY_LIST_VARIABLE = """
+query QUERY_LIST_VARIABLE($userLabel: String!, $robotLabel: String!, $sessionLabel: String!) {
+  users(where: { label: $userLabel }) {
+    robots(where: { label: $robotLabel }) {
+      sessions(where: { label: $sessionLabel }) {
+        variables {
+          label
+        }
+      }
+    }
+  }
+}"""
+
 # =================================================
 # Factor Operations
 # =================================================
 
-[[operation]]
-name = "GQL_GET_FACTOR"
-data = """
-query sdk_get_variable(
+QUERY_GET_FACTOR = """
+query QUERY_GET_FACTOR(
   $userId: ID!,
   $robotId: ID!,
   $sessionId: ID!,
