@@ -113,6 +113,36 @@ query QUERY_GET_VARIABLES(
 }
 """
 
+QUERY_GET_VARIABLES_FILTERED = """
+query sdk_get_variables_filtered(
+    $userLabel: EmailAddress!,
+    $robotLabels: String[]!,
+    $sessionLabels: String[]!,
+    $variable_label_regexp: String = ".*",
+    $variable_tags: [String] = ["VARIABLE"],
+    $solvable: Int! = 0,
+  	$fields_summary: Boolean! = false, 
+  	$fields_full: Boolean! = false){
+	users(where:{label:$userLabel}){
+    name
+		robots(where:{label_IN: $robotLabels}) {
+      name
+      sessions(where:{label_IN: $sessionLabels}){
+        name
+        variables(where:{
+            label_MATCHES: $variable_label_regexp, 
+          	tags: $variable_tags, 
+          	solvable_GTE: $solvable}) {
+          ...variable_skeleton_fields
+          ...variable_summary_fields @include(if: $fields_summary)
+          ...variable_full_fields @include(if: $fields_full)
+        }
+      }
+    }
+  }
+}"""
+
+
 MUTATION_ADD_VARIABLES = """
 mutation MUTATION_ADD_VARIABLES($variablesToCreate: [VariableCreateInput!]!) {
   addVariables(input: $variablesToCreate) {
