@@ -116,8 +116,8 @@ query QUERY_GET_VARIABLES(
 QUERY_GET_VARIABLES_FILTERED = """
 query sdk_get_variables_filtered(
     $userLabel: EmailAddress!,
-    $robotLabels: String[]!,
-    $sessionLabels: String[]!,
+    $robotLabels: [String]!,
+    $sessionLabels: [String]!,
     $variable_label_regexp: String = ".*",
     $variable_tags: [String] = ["VARIABLE"],
     $solvable: Int! = 0,
