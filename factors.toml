@@ -70,3 +70,17 @@ query sdk_list_factors($userLabel: EmailAddress!, $robotLabel: String!, $session
   }
 }
 """
+
+MUTATION_ADD_FACTORS = """
+mutation sdk_add_factors($factorsToCreate: [FactorCreateInput!]!) {
+  addFactors(
+    input: $factorsToCreate
+  ) {
+    factors {
+      ...FRAGMENT_FACTOR_SKELETON
+      ...FRAGMENT_FACTOR_SUMMARY
+      ...FRAGMENT_FACTOR
+    }
+  }
+}
+"""
