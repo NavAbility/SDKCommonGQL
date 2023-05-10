@@ -57,6 +57,28 @@ query QUERY_GET_FACTOR(
   }
 """
 
+QUERY_GET_FACTORS = """
+query QUERY_GET_FACTORS(
+  $userLabel: EmailAddress!
+  $robotLabel: String!
+  $sessionLabel: String!
+  $fields_summary: Boolean! = true
+  $fields_full: Boolean! = true
+) {
+  users(where: { label: $userLabel }) {
+    robots(where: { label: $robotLabel }) {
+      sessions(where: { label: $sessionLabel }) {
+        factors {
+          ...FRAGMENT_FACTOR_SKELETON
+          ...FRAGMENT_FACTOR_SUMMARY @include(if: $fields_summary)
+          ...FRAGMENT_FACTOR @include(if: $fields_full)
+        }
+      }
+    }
+  }
+}
+"""
+
 QUERY_LISTFACTORS = """
 query sdk_list_factors($userLabel: EmailAddress!, $robotLabel: String!, $sessionLabel: String!) {
   users(where: { label: $userLabel }) {
