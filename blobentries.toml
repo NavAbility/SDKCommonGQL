@@ -92,7 +92,7 @@ mutation MUTATION_ADD_BLOBENTRIES($blobEntries: [BlobEntryCreateInput!]!) {
 
 QUERY_LIST_BLOBENTRIES = """
 query QUERY_LIST_BLOBENTRIES(
-    $userLabel:String!, 
+    $userLabel:EmailAddress!, 
     $robotLabel:String!, 
     $sessionLabel:String!, 
     $variableLabel: String!) {
@@ -120,7 +120,7 @@ query QUERY_LIST_BLOBENTRIES(
 
 QUERY_LIST_SESSION_BLOBENTRIES = """
 query QUERY_LIST_SESSION_BLOBENTRIES(
-    $userLabel:String!, 
+    $userLabel:EmailAddress!, 
     $robotLabel:String!, 
     $sessionLabel:String!) {
   users(where: { label: $userLabel }) {
