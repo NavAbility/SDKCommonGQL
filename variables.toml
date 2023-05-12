@@ -173,6 +173,40 @@ query QUERY_LIST_VARIABLES(
 }
 """
 
+QUERY_LIST_NEIGHBORS = """
+query QUERY_LIST_NEIGHBORS(
+  $userLabel: EmailAddress!
+  $robotLabel: String!
+  $sessionLabel: String!
+  $nodeLabel: String!
+) {
+  variables(
+    where: {
+      userLabel: $userLabel
+      robotLabel: $robotLabel
+      sessionLabel: $sessionLabel
+      label: $nodeLabel
+    }
+  ) {
+    factors {
+      label
+    }
+  }
+  factors(
+    where: {
+      userLabel: $userLabel
+      robotLabel: $robotLabel
+      sessionLabel: $sessionLabel
+      label: $nodeLabel
+    }
+  ) {
+    variables {
+      label
+    }
+  }
+}
+"""
+
 QUERY_EXISTS_VARIABLE_FACTOR_LABEL = """
 query QUERY_EXISTS_VARIABLE_FACTOR_LABEL(
     $userLabel: EmailAddress!
