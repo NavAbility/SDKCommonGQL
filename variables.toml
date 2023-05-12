@@ -175,7 +175,7 @@ query QUERY_LIST_VARIABLES(
 
 QUERY_LIST_NEIGHBORS = """
 query QUERY_LIST_NEIGHBORS(
-  $userLabel: EmailAddress!
+  $userLabel: String!
   $robotLabel: String!
   $sessionLabel: String!
   $nodeLabel: String!
