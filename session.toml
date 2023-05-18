@@ -59,3 +59,26 @@ query QUERY_GET_SESSION (
     }
   }
 """
+
+MUTATION_ADD_SESSION = """
+mutation MUTATION_ADD_SESSION(
+  $userLabel: String!
+  $robotLabel: String!
+  $sessionLabel: String!
+  $version: String!
+) {
+  addSessions(
+    input: {
+      label: $sessionLabel
+      _version: $version
+      userLabel: $userLabel
+      robotLabel: $robotLabel
+      robot: { connect: { where: { node: { label: $robotLabel } } } }
+    }
+  ) {
+    sessions {
+      ...FRAGMENT_SESSION
+    }
+  }
+}
+"""
