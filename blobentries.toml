@@ -13,11 +13,13 @@ fragment FRAGMENT_BLOBENTRY on BlobEntry {
   blobstore
   hash
   origin
+  size
   description
   mimeType
   metadata
   timestamp
-  _type
+  createdTimestamp
+  lastUpdatedTimestamp
   _version
 }
 """
@@ -29,57 +31,29 @@ fragment FRAGMENT_BLOBENTRY on BlobEntry {
 [operations]
 
 QUERY_GET_BLOBENTRY = """
-query QUERY_GET_BLOBENTRY(
-  $userLabel: EmailAddress!
-  $robotLabel: String!
-  $sessionLabel: String!
-  $variableLabel: String!
-  $blobLabel: String!
+query getBlobEntry(
+  $id: ID!
 ) {
-  users(where: { label: $userLabel }) {
-    robots(where: { label: $robotLabel }) {
-      sessions(where: { label: $sessionLabel }) {
-        variables(where: { label: $variableLabel }) {
-          blobEntries(where: { label: $blobLabel }) {
-            ...FRAGMENT_BLOBENTRY
-          }
-        }
-      }
-    }
+  blobEntries(where: { id: $id }) {
+    ...FRAGMENT_BLOBENTRY
   }
 }
 """
 
 QUERY_GET_BLOBENTRIES = """
-query QUERY_GET_BLOBENTRIES(
-  $userLabel: EmailAddress!
-  $robotLabel: String!
-  $sessionLabel: String!
-  $variableLabel: String!
+query geBlobEntries(
+  $id: ID!
 ) {
-  users(where: { label: $userLabel }) {
-    robots(where: { label: $robotLabel }) {
-      sessions(where: { label: $sessionLabel }) {
-        variables(where: { label: $variableLabel }) {
-          blobEntries {
-            ...FRAGMENT_BLOBENTRY
-          }
-        }
-      }
+  variables(where: { id: $id }) {
+    blobEntries {
+      ...FRAGMENT_BLOBENTRY
     }
   }
 }
 """
 
-# label_IN
-# label_MATCHES
-# label_CONTAINS
-# label_STARTS_WITH
-# label_ENDS_WITH
-
 MUTATION_ADD_BLOBENTRIES = """
-mutation MUTATION_ADD_BLOBENTRIES($blobEntries: [BlobEntryCreateInput!]!) {
-  # Create the new ones
+mutation addBlobEntries($blobEntries: [BlobEntryCreateInput!]!) {
   addBlobEntries(
     input: $blobEntries
   ) {
@@ -91,94 +65,81 @@ mutation MUTATION_ADD_BLOBENTRIES($blobEntries: [BlobEntryCreateInput!]!) {
 """
 
 QUERY_LIST_BLOBENTRIES = """
-query QUERY_LIST_BLOBENTRIES(
-    $userLabel:EmailAddress!, 
-    $robotLabel:String!, 
-    $sessionLabel:String!, 
-    $variableLabel: String!) {
-  users (
-    where: {label: $userLabel}
+query listBlobEntries($id: ID!) {
+  variables (
+    where: {id: $id}
   ) {
-    robots (
-      where: {label: $robotLabel}
-    ) {
-      sessions (
-        where: {label: $sessionLabel}
-      ) {
-        variables (
-          where: {label: $variableLabel}
-        ) {
-          blobEntries {
-            label
-          }
-        }
-      }
+    blobEntries {
+      label
     }
   }
 }
 """
 
-QUERY_LIST_SESSION_BLOBENTRIES = """
-query QUERY_LIST_SESSION_BLOBENTRIES(
-    $userLabel:EmailAddress!, 
-    $robotLabel:String!, 
-    $sessionLabel:String!) {
-  users(where: { label: $userLabel }) {
-    robots(where: { label: $robotLabel }) {
-      sessions(where: { label: $sessionLabel }) {
-        blobEntries {
-          label
-        }
-      }
+QUERY_LIST_FACTORGRAPH_BLOBENTRIES = """
+query listGraphBlobEntries($id: ID!) {
+  factorgraphs(where: { id: $id }) {
+    blobEntries {
+      label
     }
   }
 }
 """
 
-QUERY_GET_USER_BLOBENTRY = """
-query QUERY_GET_USER_BLOBENTRY(
-  $userLabel: EmailAddress!
-  $blobLabel: String!
-) {
-  users(where: { label: $userLabel }) {
-    blobEntries(where: { label: $blobLabel }) {
+QUERY_LIST_AGENT_BLOBENTRIES = """
+query listAgentBlobEntries($id: ID!) {
+  agents(where: { id: $id }) { 
+    blobEntries {
+      label
+    } 
+  }
+}
+"""
+
+QUERY_LIST_MODEL_BLOBENTRIES = """
+query listModelBlobEntries($id: ID!) {
+  models(where: { id: $id }) { 
+    blobEntries {
+      label
+    } 
+  }
+}
+"""
+
+GQL_GET_FG_BLOBENTRIES = """
+query getGraphBlobEntries($id: ID!) {
+  factorgraphs(where: { id: $id }) {
+    blobEntries {
       ...FRAGMENT_BLOBENTRY
     }
   }
 }
 """
 
-QUERY_GET_ROBOT_BLOBENTRY = """
-query QUERY_GET_ROBOT_BLOBENTRY(
-  $userLabel: EmailAddress!
-  $robotLabel: String!
-  $blobLabel: String!
-) {
-  users(where: { label: $userLabel }) {
-    robots(where: { label: $robotLabel }) {
-      blobEntries(where: { label: $blobLabel }) {
-        ...FRAGMENT_BLOBENTRY
-      }
-    }
+QUERY_GET_AGENT_BLOBENTRIES = """
+query getAgentBlobEntries($id: ID!) {
+  agents(where: { id: $id }) { 
+    blobEntries {
+      ...FRAGMENT_BLOBENTRY
+    } 
   }
 }
 """
 
-QUERY_GET_SESSION_BLOBENTRY = """
-query QUERY_GET_SESSION_BLOBENTRY(
-  $userLabel: EmailAddress!
-  $robotLabel: String!
-  $sessionLabel: String!
-  $blobLabel: String!
-) {
-  users(where: { label: $userLabel }) {
-    robots(where: { label: $robotLabel }) {
-      sessions(where: { label: $sessionLabel }) {
-        blobEntries(where: { label: $blobLabel }) {
-          ...FRAGMENT_BLOBENTRY
-        }
-      }
-    }
+QUERY_GET_MODEL_BLOBENTRIES = """
+query getModelBlobEntries($id: ID!) {
+  models(where: { id: $id }) { 
+    blobEntries {
+      ...FRAGMENT_BLOBENTRY
+    } 
+  }
+}
+"""
+
+QUERY_DELETE_BLOBENTRY = """
+mutation deleteBlobEntry($id: ID!) {
+  deleteBlobEntries(where: { id: $id }) {
+    nodesDeleted
   }
 }
 """
