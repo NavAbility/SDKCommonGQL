@@ -106,7 +106,7 @@ query listModelBlobEntries($id: ID!) {
 }
 """
 
-GQL_GET_FG_BLOBENTRIES = """
+QUERY_GET_FG_BLOBENTRIES = """
 query getGraphBlobEntries($id: ID!) {
   factorgraphs(where: { id: $id }) {
     blobEntries {

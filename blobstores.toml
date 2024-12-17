@@ -3,7 +3,7 @@
 
 [operations]
 
-GQL_CREATE_UPLOAD = """
+MUTATION_CREATE_UPLOAD = """
 mutation createUpload(
   $blobId: ID!, 
   $store: BlobStoreInput = {
@@ -27,7 +27,7 @@ mutation createUpload(
 }
 """
 
-GQL_COMPLETE_UPLOAD = """
+MUTATION_COMPLETE_UPLOAD = """
 mutation CompleteUpload (
   $blobId: ID!, 
   $completedUpload: CompletedUploadInput!,
@@ -43,7 +43,7 @@ mutation CompleteUpload (
 }
 """
 
-GQL_COMPLETE_UPLOAD_SINGLE = """
+MUTATION_COMPLETE_UPLOAD_SINGLE = """
 mutation completeUpload(
   $blobId: ID!, $uploadId: ID!, 
   $eTag: String, 
