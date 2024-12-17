@@ -26,7 +26,6 @@ fragment FRAGMENT_FACTOR on Factor {
   solvable
   data
   metadata
-  _type
   _version
 }
 """
@@ -38,63 +37,59 @@ fragment FRAGMENT_FACTOR on Factor {
 [operations]
 
 QUERY_GET_FACTOR = """
-query QUERY_GET_FACTOR(
-  $userLabel: EmailAddress!,
-  $robotLabel: String!,
-  $sessionLabel: String!,
-  $label: String!) {
-    users(where:{label: $userLabel}) {
-      robots(where:{label: $robotLabel}) {
-        sessions(where:{label: $sessionLabel}) {
-          factors(where:{label: $label}) {
-            ...FRAGMENT_FACTOR_SKELETON
-            ...FRAGMENT_FACTOR_SUMMARY
-            ...FRAGMENT_FACTOR
-          }
-        }
-      }
-    }
+query getFactor(
+  $facId: ID!,
+  $fields_summary: Boolean! = true,
+  $fields_full: Boolean! = true
+) {
+  factors(where: { id: $facId }) {
+    ...FRAGMENT_FACTOR_SKELETON
+    ...FRAGMENT_FACTOR_SUMMARY @include(if: $fields_summary)
+    ...FRAGMENT_FACTOR @include(if: $fields_full)
   }
+}
 """
 
 QUERY_GET_FACTORS = """
-query QUERY_GET_FACTORS(
-  $userLabel: EmailAddress!
-  $robotLabel: String!
-  $sessionLabel: String!
-  $fields_summary: Boolean! = true
+query getFactors(
+  $fgId: ID!,
+  $fields_summary: Boolean! = true,
   $fields_full: Boolean! = true
 ) {
-  users(where: { label: $userLabel }) {
-    robots(where: { label: $robotLabel }) {
-      sessions(where: { label: $sessionLabel }) {
-        factors {
-          ...FRAGMENT_FACTOR_SKELETON
-          ...FRAGMENT_FACTOR_SUMMARY @include(if: $fields_summary)
-          ...FRAGMENT_FACTOR @include(if: $fields_full)
-        }
-      }
+  factorgraphs(where: { id: $fgId }) {
+    factors {
+      ...FRAGMENT_FACTOR_SKELETON
+      ...FRAGMENT_FACTOR_SUMMARY @include(if: $fields_summary)
+      ...FRAGMENT_FACTOR @include(if: $fields_full)
     }
   }
 }
 """
 
-QUERY_LISTFACTORS = """
-query sdk_list_factors($userLabel: EmailAddress!, $robotLabel: String!, $sessionLabel: String!) {
-  users(where: { label: $userLabel }) {
-    robots(where: { label: $robotLabel }) {
-      sessions(where: { label: $sessionLabel }) {
-        factors {
-          label
-        }
-      }
-    }
+QUERY_GET_FACTORS_FILTERED = """
+query getFactors_filtered(
+    $sessionId: ID!,
+    $factor_label_regexp: String = ".*",
+    $factor_tags: [String] = ["FACTOR"],
+    $solvable: Int! = 0,
+    $fields_summary: Boolean! = false, 
+    $fields_full: Boolean! = false
+){
+  factors( where: {
+        session: {id: $sessionId},
+        label_MATCHES: $factor_label_regexp, 
+        tags: $factor_tags, 
+        solvable_GTE: $solvable},
+        options: { sort: [{ label: ASC } ]}) {
+      ...FRAGMENT_FACTOR_SKELETON
+      ...FRAGMENT_FACTOR_SUMMARY @include(if: $fields_summary)
+      ...FRAGMENT_FACTOR @include(if: $fields_full)
   }
 }
 """
 
 MUTATION_ADD_FACTORS = """
-mutation sdk_add_factors($factorsToCreate: [FactorCreateInput!]!) {
+mutation addFactors($factorsToCreate: [FactorCreateInput!]!) {
   addFactors(
     input: $factorsToCreate
   ) {
@@ -103,6 +98,30 @@ mutation sdk_add_factors($factorsToCreate: [FactorCreateInput!]!) {
       ...FRAGMENT_FACTOR_SUMMARY
       ...FRAGMENT_FACTOR
     }
+  }
+}
+"""
+
+QUERY_LISTFACTORS = """
+query listFactors($fgId: ID!, $where: ListWhere = {}) {
+  listFactors(fgId: $fgId, where: $where)
+}
+"""
+
+MUTATION_DELETE_FACTOR = """
+mutation deleteFactor($factorId: ID!) {
+  deleteFactors(
+    where: { id: $factorId }
+    delete: {
+      blobEntries: {
+        where: {
+          node: { parentConnection: {Factor: { node: { id: $factorId } } } }
+        }
+      }
+    }
+  ) {
+    nodesDeleted
+    relationshipsDeleted
   }
 }
 """

@@ -3,30 +3,57 @@
 
 [operations]
 
-GQL_CREATE_UPLOAD = """
-mutation sdk_url_createupload($name: String!, $size: BigInt!, $parts: Int!) {
+MUTATION_CREATE_UPLOAD = """
+mutation createUpload(
+  $blobId: ID!, 
+  $store: BlobStoreInput = {
+    label: "default", 
+    type: NVA_CLOUD
+  }, 
+  $parts: Int = 1
+) {
   createUpload(
-    blob: {
-      name: $name,
-      size: $size
-    },
+    store: $store, 
+    blobId: $blobId, 
     parts: $parts
   ) {
+    blobId
     uploadId
     parts {
       partNumber
       url
     }
-    blob {
-      id
-    }
   }
 }
 """
 
-GQL_COMPLETEUPLOAD_SINGLE = """
-mutation completeUpload($blobId: ID!, $uploadId: ID!, $eTag: String) {
+MUTATION_COMPLETE_UPLOAD = """
+mutation CompleteUpload (
+  $blobId: ID!, 
+  $completedUpload: CompletedUploadInput!,
+) {
+  completeUpload(
+    store: {
+      label: "default", 
+      type: NVA_CLOUD
+    },
+    blobId: $blobId
+    completedUpload: $completedUpload
+  )
+}
+"""
+
+MUTATION_COMPLETE_UPLOAD_SINGLE = """
+mutation completeUpload(
+  $blobId: ID!, $uploadId: ID!, 
+  $eTag: String, 
+  $store: BlobStoreInput = {
+    label: "default", 
+    type: NVA_CLOUD
+  }
+) {
   completeUpload (
+    store: $store,
     blobId: $blobId,
     completedUpload: {
       uploadId: $uploadId,
@@ -41,24 +68,22 @@ mutation completeUpload($blobId: ID!, $uploadId: ID!, $eTag: String) {
 }
 """
 
-GQL_LIST_BLOBS_NAME_CONTAINS = """
-query($name: String!) {
-  blobs(where: { name_CONTAINS: $name }) {
-    id
-    name
-    size
-    createdTimestamp
-  }
+MUTATION_CREATE_DOWNLOAD = """
+mutation createDownload(
+  $blobId: ID!,
+  $label: String = "default",
+  $type: BlobStoreType = NVA_CLOUD
+) {
+  createDownload(blobId: $blobId, store: {label: $label, type: $type})
 }
 """
 
-MUTATION_CREATEDOWNLOAD = """
-mutation MUTATION_CREATEDOWNLOAD($userLabel: String!, $blobId: ID!) {
-  createDownload(
-    userId: $userLabel
-    blobId: $blobId
-  )
+MUTATION_DELETE_BLOB = """
+mutation deleteBlob(
+  $blobId: ID!,
+  $label: String = "default",
+  $type: BlobStoreType = NVA_CLOUD
+) {
+  deleteBlob(blobId: $blobId, store: {label: $label, type: $type})
 }
 """
-
-   
