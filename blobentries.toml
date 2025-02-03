@@ -107,9 +107,9 @@ query listModelBlobEntries($id: ID!) {
 """
 
 QUERY_GET_FG_BLOBENTRIES = """
-query getGraphBlobEntries($id: ID!) {
+query getGraphBlobEntries($id: ID!, $entrywhere: BlobEntryWhere = {}) {
   factorgraphs(where: { id: $id }) {
-    blobEntries {
+    blobEntries (where: $entrywhere) {
       ...FRAGMENT_BLOBENTRY
     }
   }
@@ -117,9 +117,9 @@ query getGraphBlobEntries($id: ID!) {
 """
 
 QUERY_GET_AGENT_BLOBENTRIES = """
-query getAgentBlobEntries($id: ID!) {
+query getAgentBlobEntries($id: ID!, $entrywhere: BlobEntryWhere = {}) {
   agents(where: { id: $id }) { 
-    blobEntries {
+    blobEntries (where: $entrywhere) {
       ...FRAGMENT_BLOBENTRY
     } 
   }
@@ -127,9 +127,9 @@ query getAgentBlobEntries($id: ID!) {
 """
 
 QUERY_GET_MODEL_BLOBENTRIES = """
-query getModelBlobEntries($id: ID!) {
+query getModelBlobEntries($id: ID!, $entrywhere: BlobEntryWhere = {}) {
   models(where: { id: $id }) { 
-    blobEntries {
+    blobEntries (where: $entrywhere) {
       ...FRAGMENT_BLOBENTRY
     } 
   }
