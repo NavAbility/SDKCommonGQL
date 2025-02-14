@@ -87,3 +87,15 @@ mutation deleteBlob(
   deleteBlob(blobId: $blobId, store: {label: $label, type: $type})
 }
 """
+
+QUERY_LIST_BLOBS = """
+query listBlobs($label: String = "default", $type: BlobStoreType = NVA_CLOUD) {
+  listBlobs(store: {label: $label, type: $type})
+}
+"""
+
+QUERY_HAS_BLOB = """
+query hasBlob($blobId: ID!, $label: String = "default", $type: BlobStoreType = NVA_CLOUD) {
+  hasBlob(blobId: $blobId, store: {label: $label, type: $type})
+}
+"""

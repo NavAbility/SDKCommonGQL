@@ -1,0 +1,71 @@
+[operations]
+
+QUERY_GET_AGENT = """
+query QUERY_GET_AGENT($agentId: ID!) {
+  agents (where: {id: $agentId}) {
+    id
+    label
+    createdTimestamp
+    namespace
+  }
+}
+"""
+
+GQL_ADD_AGENTS = """
+mutation addAgents($input: [AgentCreateInput!]!) {
+  addAgents(input: $input) {
+    agents {
+        label
+        createdTimestamp
+        namespace
+    }
+  }
+}
+"""
+
+GQL_DELETE_AGENT = """
+mutation deleteAgent($id: ID!) {
+  deleteAgents(
+    where: { id: $id }
+    delete: {
+      blobEntries: {
+        where: { node: { parentConnection: {Agent: {node: {id: $id } } } } }
+      }
+    }
+  ) {
+    nodesDeleted
+    relationshipsDeleted
+  }
+}
+"""
+
+QUERY_LIST_AGENTS = """
+query listAgents($id: ID!) {
+  orgs(where: {id: $id}) {
+    agents {
+      label
+    }
+  }
+}
+"""
+
+QUERY_GET_AGENT_METADATA = """
+query getAgentMetadata($id: ID!) {
+  agents(where: {id: $id}) {
+    metadata
+  }
+}
+"""
+
+QUERY_SET_AGENT_METADATA = """
+mutation setAgentMetadata($id: ID!, $meta: String!) {
+  updateAgents(
+    where: { id: $id }
+    update: { metadata: $meta }
+  ) {
+    agents {
+      metadata
+    }
+  }
+}
+"""

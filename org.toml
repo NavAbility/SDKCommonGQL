@@ -1,0 +1,33 @@
+[operations]
+
+GQL_ADD_ORG = """
+mutation addOrg($label: String!, $description: String = "") {
+  addOrgs(input: {label: $label, description: $description}) {
+    orgs {
+      id
+      label
+      description
+    }
+  }
+}
+"""
+
+GQL_GET_ORG = """
+query getOrg($label: String!) {
+  orgs(where: {label: $label}) {
+    id
+    label
+    description
+  }
+}
+"""
+
+GQL_GET_ORGS = """
+query getOrgs{
+  orgs{
+    id
+    label
+    description
+  }
+}
+"""
